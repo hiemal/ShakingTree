@@ -10,7 +10,7 @@ var socket;
 
 // --------------------------------------------------------------------
 var resources = {};
-var res_names = ['v_bg','h_bg','lf1','lf2','lf3'];
+var res_names = ['v_bg','h_bg','lf1','lf2','lf3','t1','t2','t3','t4','ft1','ft2','ft3','ft4'];
 
 var deviceMode; // horizontal or vertinal
 var num_leafs; // number of leafs that fall when shaked
@@ -18,6 +18,8 @@ var num_leafs; // number of leafs that fall when shaked
 var leafs_fall_toggle = false;
 var leafs = [];
 
+var turtle_move_toggle = false;
+var turtle;
 
 class Leaf {
   constructor(){
@@ -49,6 +51,35 @@ class Leaf {
     this.timeCounter++;
   }
 
+}
+
+
+class Turtle {
+  constructor(x,y){
+    this.timeCounter = 0; // animation frame
+    this.x = x;
+    this.y = y;
+  }
+
+  display(max_x_distance){
+    
+    var animiIndex = 1+Math.floor(this.timeCounter/10)%4;
+    var shiftx_raw = (this.timeCounter%max_x_distance-max_x_distance/2);
+    var shiftx = abs(shiftx_raw);// movement along x axis
+
+    resetMatrix();
+    var pref;
+    if (shiftx_raw>0){
+      pref = "t";
+    }else{
+      pref = "ft";
+    }
+    image(resources[pref+animiIndex],this.x+shiftx ,this.y,100,100);
+    if (turtle_move_toggle){
+      this.timeCounter++;
+    }
+
+  }
 }
 
 
@@ -93,6 +124,7 @@ function setup() {
     var lf = new Leaf();
     leafs.push(lf);
   }
+  turtle = new Turtle(windowWidth/2,windowHeight-100);
 
 }
 
@@ -108,6 +140,8 @@ function draw() {
       leafs[i].display();
     }
   }
+
+  turtle.display(windowWidth/3);
 
 }
 
@@ -131,11 +165,22 @@ function mouseClicked(){
   leafs_fall_toggle = !leafs_fall_toggle;
 } 
 
-// in dev mode, keyPressed is to simulate deviceRotated()
+// in dev mode, keyPressed is to simulate deviceTurned()
 function keyPressed() {
   if (keyCode === LEFT_ARROW) {
     deviceMode = "h";
   } else if (keyCode === RIGHT_ARROW) {
     deviceMode = "v";
+  } 
+
+}
+
+// deviceMoved()
+function keyPressed() {
+  if (keyCode === DOWN_ARROW){
+    turtle_move_toggle = true;
   }
+}
+function keyReleased() {
+  turtle_move_toggle = false;
 }
