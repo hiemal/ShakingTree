@@ -44,10 +44,11 @@ class Leaf {
     this.timeCounter = 0; // this is the frame counter for the animation
   }
 
-  display(){
+  display(canvas_h){
     rotate(2*PI/this.degree);
     var shifty = this.speed*this.timeCounter; // distance the leaf falls in y axis
-    image(resources[this.typeName],this.x,this.y+shifty,this.width,this.height);
+    var newy = (this.y+shifty)%canvas_h;
+    image(resources[this.typeName],this.x,newy,this.width,this.height);
     this.timeCounter++;
   }
 
@@ -137,7 +138,7 @@ function draw() {
 
   if (leafs_fall_toggle){
     for (i=0;i<leafs.length;i++){
-      leafs[i].display();
+      leafs[i].display(windowHeight);
     }
   }
 
