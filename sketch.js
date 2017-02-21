@@ -166,17 +166,13 @@ function mouseClicked(){
 } 
 
 // in dev mode, keyPressed is to simulate deviceTurned()
+// deviceMoved()
 function keyPressed() {
   if (keyCode === LEFT_ARROW) {
     deviceMode = "h";
   } else if (keyCode === RIGHT_ARROW) {
     deviceMode = "v";
   } 
-
-}
-
-// deviceMoved()
-function keyPressed() {
   if (keyCode === DOWN_ARROW){
     turtle_move_toggle = true;
   }
